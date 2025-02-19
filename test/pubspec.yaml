@@ -38,6 +38,7 @@ dependencies:
   firebase_auth: ^5.4.2
   fluttertoast: ^8.2.12
   flutter_facebook_auth: ^7.1.1
+  firebase_phone_auth_handler: ^1.1.0+1
 
 dev_dependencies:
   flutter_test:

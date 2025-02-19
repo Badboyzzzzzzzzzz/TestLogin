@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test/screens/phone_auth.dart';
 import 'package:test/screens/signup.dart';
 import '../services/auth_service.dart';
 
@@ -30,7 +31,9 @@ class Login extends StatelessWidget {
               const SizedBox(height: 16),
               _signin(context),
               const SizedBox(height: 16),
-              _facebookLogin(context), // Facebook Login Button
+              _facebookLogin(context),
+              const SizedBox(height: 16),
+              _phoneLogin(context), // 📌 Added Phone Login Button
             ],
           ),
         ),
@@ -112,6 +115,27 @@ class Login extends StatelessWidget {
           Icon(Icons.facebook, color: Colors.white),
           SizedBox(width: 8),
           Text('Continue with Facebook', style: TextStyle(color: Colors.white)),
+        ],
+      ),
+    );
+  }
+
+  // 📌 New Phone Login Button
+  Widget _phoneLogin(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PhoneAuthScreen()), // Navigate to PhoneLogin screen
+        );
+      },
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.phone, color: Colors.white),
+          SizedBox(width: 8),
+          Text('Sign in with Phone', style: TextStyle(color: Colors.white)),
         ],
       ),
     );
