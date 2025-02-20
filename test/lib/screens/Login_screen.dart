@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:test/screens/phone_auth.dart';
 import 'package:test/screens/signup.dart';
@@ -105,18 +106,15 @@ class Login extends StatelessWidget {
 
   Widget _facebookLogin(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
       onPressed: () async {
-        await AuthService().signInWithFacebook(context);
+        UserCredential? userCredential = await AuthService().signInWithFacebook();
+        if (userCredential != null) {
+          print('Logged in as: ${userCredential.user?.displayName}');
+        } else {
+          print('Login failed');
+        }
       },
-      child: const Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.facebook, color: Colors.white),
-          SizedBox(width: 8),
-          Text('Continue with Facebook', style: TextStyle(color: Colors.white)),
-        ],
-      ),
+      child: Text('Login with Facebook'),
     );
   }
 
@@ -127,7 +125,9 @@ class Login extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => PhoneAuthScreen()), // Navigate to PhoneLogin screen
+          MaterialPageRoute(
+              builder: (context) =>
+                  PhoneAuthScreen()), // Navigate to PhoneLogin screen
         );
       },
       child: const Row(

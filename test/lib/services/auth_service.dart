@@ -54,27 +54,30 @@ class AuthService {
   }
 
   // Sign in with Facebook
-  Future<UserCredential?> signInWithFacebook(BuildContext context) async {
-    try {
-      final LoginResult result = await FacebookAuth.instance.login();
-      if (result.status == LoginStatus.success) {
-        final AccessToken accessToken = result.accessToken!;
-        final OAuthCredential credential =
-            FacebookAuthProvider.credential(accessToken.tokenString);
-        UserCredential userCredential =
-            await _auth.signInWithCredential(credential);
+  Future<UserCredential?> signInWithFacebook() async {
+  try {
+    // Trigger Facebook login
+    final LoginResult result = await FacebookAuth.instance.login();
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
-        return userCredential;
-      } else {
-        _showToast("Facebook login failed");
-      }
-    } catch (e) {
-      _showToast("Error: $e");
+    if (result.status == LoginStatus.success) {
+      // Get the access token
+      final AccessToken accessToken = result.accessToken!;
+      
+      // Create a Firebase credential
+      final OAuthCredential credential = FacebookAuthProvider.credential(accessToken.tokenString);
+      
+      // Sign in with Firebase
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } else {
+      print('Facebook login failed: ${result.message}');
+      return null;
     }
+  } catch (e) {
+    print('Error during Facebook login: $e');
     return null;
   }
+}
+
 
   // Logout
   Future<void> signOut() async {
